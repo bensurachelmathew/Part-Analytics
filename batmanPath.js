@@ -1,32 +1,41 @@
+function addDirection(str, count) {
+    let path = ''
+    for (let i = 0; i < count; i++) {
+        path += str
+    }
+    return path;
+}
 function shortestPath(str) {
     let len = str.length;
     let map = new Map();
+    map.set('E', 0);
+    map.set('W', 0)
+    map.set('N', 0)
+    map.set('S', 0)
     for (let i = 0; i < len; i++) {
-        if (map.has(str[i])) {
-            let val = map.get(str[i]);
-            map.set(str[i], ++val)
-        } else {
-            map.set(str[i], 1)
-        }
+        let val = map.get(str[i]);
+        map.set(str[i], ++val)
     }
     let path = ''
-    if (map.get('S') - map.get('N') > 0) {
-        if (map.get('S') > map.get('N'))
-            path += 'S';
-        else
-            path += 'N';
+    let southNorthDifference = map.get('S') - map.get('N');
+    if (southNorthDifference > 0) {
 
+        path += addDirection('S', southNorthDifference)
+    } else if (southNorthDifference < 0) {
+        path += addDirection('N', -southNorthDifference)
     }
-    if (map.get('E') - map.get('W') > 0) {
+    let eastWestDifference = map.get('E') - map.get('W');
+    if (eastWestDifference > 0) {
 
-        if (map.get('E') > map.get('W'))
-            path += 'E';
-        else
-            path += 'W';
+        path += addDirection('E', eastWestDifference)
+    } else if (southNorthDifference < 0) {
+        path += addDirection('W', -eastWestDifference)
     }
+
     return path;
 
 }
 console.log(shortestPath("SSSWENEEWWENNS"))
 console.log(shortestPath("ENWSSWSEN"))
 console.log(shortestPath("EEEWW"))
+console.log(shortestPath("NEES"))
